@@ -10,19 +10,14 @@ TOKEN = os.getenv('TOKEN').strip()
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
+    
+@bot.command()
+async def ping(ctx):
+    await ctx.send('Pong!')
 
-@client.event
-async def on_message(message):
-    print(f'Message from {message.author}: {message.content}')
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-
-client.run(TOKEN)
+bot.run(TOKEN)
